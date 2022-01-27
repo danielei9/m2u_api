@@ -1,4 +1,5 @@
 import Express from 'express';
+import * as Express_Session from 'express-Session';
 import cookieParser from 'cookie-parser';
 import * as path from 'path';
 //import * as bodyParser from 'body-parser';
@@ -9,10 +10,12 @@ import * as OpenApiValidator from 'express-openapi-validator';
 import errorHandler from '../api/middlewares/error.handler.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import * as Sequelize from './db/conn_db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = new Express();
+const session = Express_Session;
 
 export default class ExpressServer {
   constructor() {
