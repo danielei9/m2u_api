@@ -24,7 +24,7 @@ const db = require("./models");
 const Role = db.role;
 
 // PONER PARA CREAR TABLAS
-//db.sequelize.sync();
+db.sequelize.sync();
 
 // force: true will drop the table if it already exists
 // db.sequelize.sync({force: true}).then(() => {
