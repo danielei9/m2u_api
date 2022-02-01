@@ -4,7 +4,7 @@ info:
   description: m2u
   version: 1.0.0
 servers:
-  - url: /api/v1
+  - url: /api/v1_1
 tags:
   - name: Examples
     description: Simple example endpoints

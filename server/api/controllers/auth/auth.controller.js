@@ -46,6 +46,9 @@ exports.signup = async (req, res) => {
 };
 
 exports.signin = (req, res) => {
+  if (debug) {
+    console.log("SIGNIN")
+  }
   User.findOne({
     where: {
       username: req.body.username
@@ -55,18 +58,20 @@ exports.signin = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: "User Not found." });
       }
-
+      
       var passwordIsValid = bcrypt.compareSync(
         req.body.pswd,
         user.pswd
       );
-
+      console.log("*/************* FIND user ************/")
+      console.log(user)
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
           message: "Invalid Password!"
         });
       }
+     
 
       var token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: 86400 // 24 hours

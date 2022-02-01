@@ -13,7 +13,7 @@ module.exports = function (app) {
   /** 
    * SIGNUP
    * 
-   * http://localhost:3000/api/V1/auth/signup
+   * http://localhost:3000/api/v1_1/auth/signup
    * {
    *  "username": "admin",
    *   "email": "ematil",
@@ -21,7 +21,7 @@ module.exports = function (app) {
    * }
    */
   app.post(
-    "/api/V1/auth/signup",
+    "/api/v1_1/auth/signup",
     [
       verifySignUp.checkDuplicateUsernameOrEmail,
       verifySignUp.checkRolesExisted
@@ -31,12 +31,12 @@ module.exports = function (app) {
 /** 
    * SIGNUIN
    * 
-   * http://localhost:3000/api/V1/auth/signin
+   * http://localhost:3000/api/v1_1/auth/signin
    * {
    *  "username": "admin",
    *   "email": "ematil",
    *   "pswd": "bcrypt"
    * }
    */  
-  app.post("/api/V1/auth/signin", controller.signin);
+  app.post("/api/v1_1/auth/signin", controller.signin);
 };
