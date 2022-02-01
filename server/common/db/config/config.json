@@ -1,4 +1,3 @@
-// TODO: no va tiene que ponerse a mano en conn_db.js
 {
   "development": {
     "username": "postgres",

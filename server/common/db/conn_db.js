@@ -16,3 +16,4 @@ const authenticate = sequelize.authenticate()
   console.error()
   console.log(l.error("No Conectado DB Error: " + err.original.routine));
 })
+export {sequelize}; 

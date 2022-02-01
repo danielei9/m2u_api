@@ -10,7 +10,7 @@ import * as OpenApiValidator from 'express-openapi-validator';
 import errorHandler from '../api/middlewares/error.handler.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import * as Sequelize from './db/conn_db.js';
+import  './db/conn_db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -46,9 +46,18 @@ export default class ExpressServer {
         ignorePaths: /.*\/spec(\/|$)/,
       })
     );
+    // uso de auth middleware
+    app.use(function(req, res, next) {
+      res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"
+      );
+      next();
+    })
   }
 
   router(routes) {
+    //app.use(auth);
     routes(app);
     app.use(errorHandler);
     return this;
