@@ -12,6 +12,12 @@ module.exports = function(app) {
 
   app.get("/api/v1_1/test/all", controller.allAccess);
 
+  app.get("/api/v1_1/user/:id", controller.findByPk);
+  app.get("/api/v1_1/user", controller.findAll);
+  app.post("/api/v1_1/user", controller.create);
+  app.put("/api/v1_1/user/:id", controller.update);
+  app.delete("/api/v1_1/user/:id", controller.destroy);
+
   app.get(
     "/api/v1_1/test/user",
     [authJwt.verifyToken],

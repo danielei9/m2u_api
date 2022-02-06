@@ -14,6 +14,7 @@ module.exports = function (app) {
    * SIGNUP
    * 
    * http://localhost:3000/api/v1_1/auth/signup
+   * SEND
    * {
    *  "username": "admin",
    *   "email": "ematil",
@@ -29,12 +30,12 @@ module.exports = function (app) {
     controller.signup
   );
 /** 
-   * SIGNUIN
+   * SIGNIN
    * 
    * http://localhost:3000/api/v1_1/auth/signin
+   * SEND
    * {
    *  "username": "admin",
-   *   "email": "ematil",
    *   "pswd": "bcrypt"
    * }
    */  
