@@ -17,6 +17,10 @@ exports.signup = async (req, res) => {
   }
   await User.create({
     username: req.body.username,
+    name: req.body.name,
+    surname: req.body.surname,
+    artist_name: req.body.artist_name,
+    phone: req.body.phone,
     email: req.body.email,
     pswd: await bcrypt.hashSync(req.body.pswd, 8).toString()
   })
