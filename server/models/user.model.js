@@ -1,5 +1,6 @@
 'use strict';
 //sequelize model:generate --name role.model --attributes name:string
+
 const {
   Model
 } = require('sequelize');
@@ -12,8 +13,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
     }
   }
+ // User.hasMany(disk, { as: 'disk', foreignKey: 'idUser' });
   User.init({
     username: DataTypes.STRING,
     name: DataTypes.STRING,
@@ -24,7 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     pswd: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'user',
   });
+ // User.hasMany(disk, {foreignKey: 'id_user'});
+
   return User;
 };

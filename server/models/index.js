@@ -32,11 +32,13 @@ db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.disk = require("../models/disk.model.js")(sequelize, Sequelize);
 db.song = require("../models/song.model.js")(sequelize, Sequelize);
-
+/*
 db.disk.hasMany(db.song, {
   foreignKey: 'id_disk'
-});
-db.song.belongsTo(db.disk);
+});*/
+
+//db.song.belongsTo(db.disk, {foreignKey : 'id_song'});
+db.disk.belongsTo(db.user, {foreignKey: "userId"});
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",

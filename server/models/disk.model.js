@@ -1,24 +1,27 @@
 'use strict';
-//sequelize model:generate --name role.model --attributes name:string
+const { user } = require("../models/user.model.js");
+
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Role extends Model {
+  class Disk extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
     }
   }
-  Role.init({
+
+  Disk.init({
+    name: DataTypes.STRING,
+    year: DataTypes.STRING,
     name: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'roles',
+    modelName: 'disks',
   });
-  return Role;
+  return Disk;
 };

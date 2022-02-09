@@ -40,6 +40,7 @@ app.get("/", (req, res) => {
 // routes
 require('./api/controllers/auth/auth.routes')(app);
 require('./api/controllers/users/user.routes')(app);
+require('./api/controllers/song/song.routes')(app);
 
 // set port, listen for requests
 //const PORT = process.env.PORT;
@@ -65,3 +66,4 @@ function initial() {
     name: "admin"
   });
 }
+//initial();
