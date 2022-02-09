@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   Disk.init({
     name: DataTypes.STRING,
     year: DataTypes.STRING,
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    id_user: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'disks',

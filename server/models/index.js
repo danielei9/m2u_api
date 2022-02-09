@@ -38,7 +38,11 @@ db.disk.hasMany(db.song, {
 });*/
 
 //db.song.belongsTo(db.disk, {foreignKey : 'id_song'});
-db.disk.belongsTo(db.user, {foreignKey: "userId"});
+
+db.user.hasMany(db.disk, {foreignKey: "id_user"});
+db.disk.belongsTo(db.user, {foreignKey: "id_user"});
+db.disk.hasMany(db.song, {foreignKey: "id_disk"});
+db.song.belongsTo(db.disk, {foreignKey: "id_disk"});
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",

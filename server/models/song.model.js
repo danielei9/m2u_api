@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Song.init({
     name: DataTypes.STRING,
-    duration: DataTypes.STRING
+    duration: DataTypes.STRING,
+    id_disk: DataTypes.INTEGER
+
   }, {
     sequelize,
     modelName: 'songs',
