@@ -1,6 +1,7 @@
 const db = require("../../../models");
 const User = db.user;
 var bcrypt = require("bcryptjs");
+const { disk } = require("../../../models");
 
 //********************************************* */
 //******************** ACCESS ******************* */
@@ -45,7 +46,7 @@ exports.moderatorBoard = (req, res) => {
 exports.findAll = async (req, res) => {
   console.log("USERS ALL")
   res.status(201)
-  await User.findAll().then((r) => res.json(r));
+  await User.findAll(/*{include: disk}*/).then((r) => res.json(r));
 };
 
 /**
@@ -136,11 +137,14 @@ exports.update = async (req, res) => {
     User.findByPk(req.params.id).then(async (user) => {
       console.log(user)
       if (user) {
-        await User.update(values, selector).then((r) => {
-          if (r)
-            res.status(200).json("Update Successfully");
+        await User.update(values, selector).then((res) => {
+          if (res) {
+            console.log(res)
+            res.status(200).json({ "status": "Succesfully" });
+
+          }
           else
-            res.status(404).json("Error Updating")
+            res.status(404).json({ "status": "Error" });
         })
       }
       else res.status(404).end();
@@ -161,8 +165,21 @@ exports.destroy = async (req, res) => {
     }
   }).then((r) => {
     if (r)
-      res.status(200).json("Delete Succesfully");
+      res.status(200).json('ok');
     else
-      res.status(404).json("Error Deleting")
-  })
+      res.status(404).json({ "status": "Error" });
+  }
+  )
 }
+
+/**
+ * getAllDiskFrom: 
+ * Get all disk from one specific user
+ */
+exports.getAllDiskFrom = async (req, res) => {
+  const result = await User.findOne({
+    where: { id: 1 },
+    include: disk
+  });
+  res.status(200).json(result);
+};

@@ -12,24 +12,46 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      //User.hasMany(models.disk);
+      User.hasOne(models.Artist);
+      User.hasOne(models.Playlist);
 
+      User.belongsToMany(models.song, {
+        through: "reproductions",
+        foreignKey: "userId",
+        otherKey: "songId"
+      });
+
+      User.belongsToMany(models.Playlist, {
+        through: "follower_lista",
+        foreignKey: "userId",
+        otherKey: "playlistId"
+      });
+      
+      User.belongsToMany(models.song, {
+        through: "playlist_user",
+        foreignKey: "userId",
+        otherKey: "playlistId"
+      });
+      User.belongsToMany(models.song, {
+        through: "like_song",
+        foreignKey: "userId",
+        otherKey: "songId"
+      });
     }
   }
- // User.hasMany(disk, { as: 'disk', foreignKey: 'idUser' });
   User.init({
     username: DataTypes.STRING,
     name: DataTypes.STRING,
     surname: DataTypes.STRING,
-    artist_name: DataTypes.STRING,
     phone: DataTypes.STRING,
     email: DataTypes.STRING,
     pswd: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'user',
+    freezeTableName: true,
   });
- // User.hasMany(disk, {foreignKey: 'id_user'});
+  // User.hasMany(disk, {foreignKey: 'id_user'});
 
   return User;
 };

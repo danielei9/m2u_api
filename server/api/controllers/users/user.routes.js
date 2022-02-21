@@ -12,6 +12,8 @@ module.exports = function(app) {
 
   app.get("/api/v1_1/test/all", controller.allAccess);
 
+  //app.get("/api/v1_1/user", controller.);
+
   app.get("/api/v1_1/user/:id", controller.findByPk);
   app.get("/api/v1_1/user", controller.findAll);
   app.post("/api/v1_1/user", controller.create);
