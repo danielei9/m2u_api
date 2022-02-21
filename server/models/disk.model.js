@@ -1,5 +1,4 @@
 'use strict';
-const { user } = require("../models/user.model.js");
 
 const {
   Model
@@ -12,17 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      Disk.belongsTo(models.Artist);
+      Disk.hasMany(models.song);
     }
   }
 
   Disk.init({
     name: DataTypes.STRING,
-    year: DataTypes.STRING,
-    name: DataTypes.STRING,
-    id_user: DataTypes.INTEGER
+    year: DataTypes.STRING
+  //  id_user: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'disks',
+    freezeTableName: true,
   });
   return Disk;
 };
+
