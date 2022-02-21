@@ -24,13 +24,7 @@ const db = require("./models");
 const Role = db.role;
 
 // PONER PARA CREAR TABLAS
-db.sequelize.sync();
-
-// force: true will drop the table if it already exists
-// db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Database with { force: true }');
-//   initial();
-// });
+//db.sequelize.sync();
 
 // simple route
 app.get("/", (req, res) => {
@@ -41,11 +35,12 @@ app.get("/", (req, res) => {
 require('./api/controllers/auth/auth.routes')(app);
 require('./api/controllers/users/user.routes')(app);
 require('./api/controllers/song/song.routes')(app);
+require('./api/controllers/disk/disk.routes')(app);
 
 // set port, listen for requests
 //const PORT = process.env.PORT;
 const PORT = 3000;
-app.listen(PORT, () => {
+app.listen(PORT, () => { 
     //logger.info('hello world')
     console.log(`Server is running on port ${PORT}.`);
 });
@@ -66,4 +61,12 @@ function initial() {
     name: "admin"
   });
 }
-//initial();
+
+// force: true will drop the table if it already exists
+/*
+db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Database with { force: true }');
+initial();
+});
+/**/
+module.exports = app
