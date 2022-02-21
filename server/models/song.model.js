@@ -12,16 +12,32 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Song.belongsTo(models.Disk);
+      Song.belongsToMany(models.User, {
+        through: "reproductions",
+        foreignKey: "songId",
+        otherKey: "userId"
+      });
+      Song.belongsToMany(models.Playlist, {
+        through: "list_song",
+        foreignKey: "songId",
+        otherKey: "playlistId"
+      });
+      Song.belongsToMany(models.User, {
+        through: "like_song",
+        foreignKey: "songId",
+        otherKey: "userId"
+      });
     }
   }
   Song.init({
     name: DataTypes.STRING,
-    duration: DataTypes.STRING,
-    id_disk: DataTypes.INTEGER
+    duration: DataTypes.STRING
+    // id_disk: DataTypes.INTEGER
 
   }, {
     sequelize,
-    modelName: 'songs',
+    freezeTableName: true,
   });
   return Song;
 };

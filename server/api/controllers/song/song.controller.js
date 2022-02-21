@@ -76,7 +76,8 @@ exports.create = async (req, res) => {
   console.log("CREATE SONG")
   await Song.create({
     name: req.body.name,
-    duration: req.body.duration
+    duration: req.body.duration,
+    DiskId: req.body.DiskId
   }).then((r) =>
     res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
   );
@@ -110,9 +111,9 @@ exports.update = async (req, res) => {
       if (song) {
         await Song.update(values, selector).then((r) => {
           if (r)
-            res.status(200).json("Update Song Successfully");
-          else
-            res.status(404).json("Error Song Updating")
+          res.status(200).json({ "status": "Succesfully" });
+        else
+          res.status(404).json({ "status": "Error" });
         })
       }
       else res.status(404).end();
@@ -133,8 +134,8 @@ exports.destroy = async (req, res) => {
     }
   }).then((r) => {
     if (r)
-      res.status(200).json("Delete Song Succesfully");
-    else
-      res.status(404).json("Error Song Deleting")
+    res.status(200).json({ "status": "Succesfully" });
+  else
+    res.status(404).json({ "status": "Error" });
   })
 }
