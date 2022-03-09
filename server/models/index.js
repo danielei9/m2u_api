@@ -18,20 +18,40 @@ const sequelize = new Sequelize(
     dialect: config.dialect,
     operatorsAliases: false,
     pool: {
-     // max: config.pool.max,
-     // min: config.pool.min,
+      // max: config.pool.max,
+      // min: config.pool.min,
       //acquire: config.pool.acquire,
-     // idle: config.pool.idle
+      // idle: config.pool.idle
     }
   }
 );
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.user = require("../models/user.model.js")(sequelize, Sequelize);
-db.role = require("../models/role.model.js")(sequelize, Sequelize);
-db.disk = require("../models/disk.model.js")(sequelize, Sequelize);
-db.song = require("../models/song.model.js")(sequelize, Sequelize);
+//--------------------------------User--------------------------------
+db.user = require("../api/User/User/user.model")(sequelize, Sequelize);
+db.role = require("../api/User/Role/role.model.js")(sequelize, Sequelize);
+db.artist = require("../api/User/Artist/artist.model.js")(sequelize, Sequelize);
+//--------------------------------Music--------------------------------
+db.disk = require("../api/Music/Disk/disk.model.js")(sequelize, Sequelize);
+db.playlist = require("../api/Music/Playlist/playlist.model")(sequelize, Sequelize);
+db.song = require("../api/Music/Song/song.model.js")(sequelize, Sequelize);
+//--------------------------------Blog--------------------------------
+db.blog = require("../api/Blog/blog.model.js")(sequelize, Sequelize);
+db.comment = require("../api/Blog/Comment/comment.model.js")(sequelize, Sequelize);
+db.post = require("../api/Blog/Post/post.model.js")(sequelize, Sequelize);
+//--------------------------------Shop--------------------------------
+db.faq = require("../api/Shop/Faq/faq.model.js")(sequelize, Sequelize);
+db.order = require("../api/Shop/Order/order.model.js")(sequelize, Sequelize);
+db.orderAddress = require("../api/Shop/OrderAddress/orderAddress.model.js")(sequelize, Sequelize);
+db.orderDetails = require("../api/Shop/OrderDetails/orderDetails.model.js")(sequelize, Sequelize)
+db.product = require("../api/Shop/Product/product.model.js")(sequelize, Sequelize)
+db.productCategory = require("../api/Shop/ProductCategory/productCategory.model.js")(sequelize, Sequelize)
+db.promotion = require("../api/Shop/Promotion/promotion.model.js")(sequelize, Sequelize)
+db.review = require("../api/Shop/Review/review.model.js")(sequelize, Sequelize)
+db.shop = require("../api/Shop/Shop/shop.model.js")(sequelize, Sequelize)
+
+
 /*
 db.disk.hasMany(db.song, {
   foreignKey: 'id_disk'
@@ -56,11 +76,21 @@ db.disk.associate = function(models) {
 };
 */
 
+db.song.belongsToMany(db.artist, {
+  through: "artist_in_song",
+  foreignKey: "songId",
+  otherKey: "artistId"
+});
+db.artist.belongsToMany(db.song, {
+  through: "artist_in_song",
+  foreignKey: "artistId",
+  otherKey: "songId"
+});
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
   otherKey: "userId"
-  });
+});
 db.user.belongsToMany(db.role, {
   through: "user_roles",
   foreignKey: "userId",

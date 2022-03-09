@@ -1,0 +1,11 @@
+ para ejecutar metodos: 
+ /*const user = User.build({
+    username: "req.body.username",
+    name: "req.body.username",
+    surname:"req.body.username",
+    artist_name:"req.body.username",
+    phone:"req.body.username",
+    email:"req.body.username",
+    pswd: "req.body.username"
+  });
+  console.log(user.getBlog())*/

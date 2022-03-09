@@ -32,10 +32,27 @@ app.get("/", (req, res) => {
 });
 
 // routes
-require('./api/controllers/auth/auth.routes')(app);
-require('./api/controllers/users/user.routes')(app);
-require('./api/controllers/song/song.routes')(app);
-require('./api/controllers/disk/disk.routes')(app);
+require('./api/User/Artist/artist.routes')(app);
+require('./api/User/Auth/auth.routes')(app);
+require('./api/User/User/user.routes')(app);
+
+require('./api/Music/Song/song.routes')(app);
+require('./api/Music/Disk/disk.routes')(app);
+require('./api/Music/Playlist/playlist.routes')(app);
+
+require('./api/Blog/blog.routes')(app);
+require('./api/Blog/Comment/comment.routes')(app);
+require('./api/Blog/Post/post.routes')(app);
+
+require('./api/Shop/Faq/faq.routes')(app);
+require('./api/Shop/Order/order.routes')(app);
+require('./api/Shop/OrderAddress/orderAddress.routes')(app);
+require('./api/Shop/OrderDetails/orderDetails.routes')(app);
+require('./api/Shop/Product/product.routes')(app);
+require('./api/Shop/ProductCategory/productCategory.routes')(app);
+require('./api/Shop/Promotion/promotion.routes')(app);
+require('./api/Shop/Review/review.routes')(app);
+require('./api/Shop/Shop/shop.routes')(app);
 
 // set port, listen for requests
 //const PORT = process.env.PORT;
@@ -63,7 +80,7 @@ function initial() {
 }
 
 // force: true will drop the table if it already exists
-/*
+
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Database with { force: true }');
 initial();

@@ -33,7 +33,6 @@ describe('USER', () => {
         expect(res.statusCode).to.equal(201);
         expect(res.body.pswd).not.empty;
       }));
-
   /**
     * Get all user
     */
@@ -100,8 +99,13 @@ describe('USER', () => {
       //.expect('Content-Type', /json/)
       .then((res) => {
         console.log(res.body)
-        expect(res.body)
-          .equal('ok')
         expect(200)
       }));
+  it('6. - FIND DELETED USER', () =>
+    request(app)
+      .get('/api/v1_1/user/' + idUser)
+      .then((res) => {
+        expect(404)
+      }));
+   
 });
