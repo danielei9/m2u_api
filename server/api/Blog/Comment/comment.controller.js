@@ -84,7 +84,7 @@ exports.create = async (req, res) => {
   try {
     await Comment.create({
       text: req.body.text,
-      text: req.body.idUser //o nombre del user o ambas TODO:
+      PostId: req.body.PostId,
     }).then((r) => {
       if (r) res.status(201).json(r);
       else res.status(404).json(r).end();

@@ -24,8 +24,13 @@ const { song } = require("../../../models");
  *]
  */
 exports.findAll = async (req, res) => {
+  try{
   console.log("Disk ALL")
   await Disk.findAll().then((r) => res.json(r));
+} catch (error) {
+  console.log(error.message)
+  res.status(404).json({ "status": error.message });
+}
 };
 /**
  * Buscar un user: 
@@ -47,11 +52,16 @@ exports.findAll = async (req, res) => {
  *
  */
 exports.findByPk = async (req, res) => {
+  try{
   console.log("Disk BY ID " + req.params.id)
   await Disk.findByPk(req.params.id).then((r) => {
     if (r) res.json(r);
     else res.status(404).end();
   });
+} catch (error) {
+  console.log(error.message)
+  res.status(404).json({ "status": error.message });
+}
 }
 /**
  * crear un user nuevo: 
@@ -69,13 +79,19 @@ exports.findByPk = async (req, res) => {
  */
 exports.create = async (req, res) => {
   console.log("CREATE Disk")
-  await Disk.create({
-    name: req.body.name,
-    duration: req.body.duration,
-    ArtistId: req.body.userId
-  }).then((r) =>
-    res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
-  );
+  try {
+    await Disk.create({
+      name: req.body.name,
+      duration: req.body.duration,
+      ArtistId: req.body.ArtistId,
+      year: req.body.year,
+    }).then((r) =>
+      res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
+    );
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }
 /**
  * Actualizar un user: 
@@ -113,7 +129,8 @@ exports.update = async (req, res) => {
       else res.status(404).end();
     });
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
   }
 }
 /**
@@ -121,6 +138,7 @@ exports.update = async (req, res) => {
  * delete http://localhost:3000/api/v1_1/user/6
  */
 exports.destroy = async (req, res) => {
+  try {
   await Disk.destroy({
     where: {
       id: req.params.id
@@ -131,18 +149,27 @@ exports.destroy = async (req, res) => {
     else
       res.status(404).json({ "status": "Error" });
   })
+} catch (error) {
+  console.log(error.message)
+  res.status(404).json({ "status": error.message });
+}
 }
 
 /* *
  * getAllSongsFromDisk :  (Esta por reparar y revisar)
  * get http://localhost:3000/api/v1_1/getAllSongsFromDisk/6
  */
- exports.getAllSongsFromDisk = async (req, res) => {
+exports.getAllSongsFromDisk = async (req, res) => {
+  try{
   const songs = await Disk.findByPk({
     include: { model: songs, as: 'songs' }
   });
-    if (songs)
-      res.status(200).json(songs);
-    else
-      res.status(404).json({ "status": "Error" });
+  if (songs)
+    res.status(200).json(songs);
+  else
+    res.status(404).json({ "status": "Error" });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }

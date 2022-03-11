@@ -6,29 +6,44 @@ const OrderDetails = db.orderDetails;
 /**
  */
 exports.findAll = async (req, res) => {
-  console.log("OrderDetails ALL")
-  await OrderDetails.findAll().then((r) => res.json(r));
+  try {
+    console.log("OrderDetails ALL")
+    await OrderDetails.findAll().then((r) => res.json(r));
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 };
 /**
  */
 exports.findByPk = async (req, res) => {
-  console.log("OrderDetails BY ID " + req.params.id)
-  await OrderDetails.findByPk(req.params.id).then((r) => {
-    if (r) res.json(r);
-    else res.status(404).end();
-  });
+  try {
+    console.log("OrderDetails BY ID " + req.params.id)
+    await OrderDetails.findByPk(req.params.id).then((r) => {
+      if (r) res.json(r);
+      else res.status(404).end();
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }
 /**
  */
 exports.create = async (req, res) => {
-  console.log("CREATE OrderDetails")
-  await OrderDetails.create({
-    name: req.body.name,
-    duration: req.body.duration,
-    ArtistId: req.body.userId
-  }).then((r) =>
-    res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
-  );
+  try {
+    console.log("CREATE OrderDetails")
+    await OrderDetails.create({
+      name: req.body.name,
+      duration: req.body.duration,
+      ArtistId: req.body.userId
+    }).then((r) =>
+      res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
+    );
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }
 /**
  */
@@ -54,7 +69,8 @@ exports.update = async (req, res) => {
       else res.status(404).end();
     });
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
   }
 }
 /**
@@ -62,14 +78,19 @@ exports.update = async (req, res) => {
  * delete http://localhost:3000/api/v1_1/user/6
  */
 exports.destroy = async (req, res) => {
-  await OrderDetails.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then((r) => {
-    if (r)
-      res.status(200).json({ "status": "Succesfully" });
-    else
-      res.status(404).json({ "status": "Error" });
-  })
+  try {
+    await OrderDetails.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then((r) => {
+      if (r)
+        res.status(200).json({ "status": "Succesfully" });
+      else
+        res.status(404).json({ "status": "Error" });
+    })
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }

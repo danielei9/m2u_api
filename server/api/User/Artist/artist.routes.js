@@ -15,4 +15,7 @@ module.exports = function(app) {
   app.post("/api/v1_1/artist", controller.create);
   app.put("/api/v1_1/artist/:id", controller.update);
   app.delete("/api/v1_1/artist/:id", controller.destroy);
+  
+  app.get("/api/v1_1/artist/:id/disk", controller.getDisks);
+
 };

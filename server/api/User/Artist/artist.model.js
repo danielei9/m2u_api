@@ -14,7 +14,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Artist.hasMany(models.disk);
+      Artist.hasOne(models.shop, {
+        foreignKey: {
+          // name: 'uid',
+          allowNull: false
+        }
+      })
       Artist.belongsTo(models.user);
+      //Artist.belongsTo(models.song);
     }
 
     /*

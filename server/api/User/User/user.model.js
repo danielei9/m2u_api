@@ -13,9 +13,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.hasOne(models.artist);
-      User.hasOne(models.blog);
-
+      User.hasMany(models.order, {
+        foreignKey: {
+          // name: 'uid',
+          allowNull: false
+        }
+      });
+      User.hasMany(models.artist);
+     /* User.hasMany(models.review, {
+        foreignKey: {
+          allowNull: false
+        }
+      }); LO RECOGE DEL ORDER */
+      User.hasMany(models.faq);
+      User.hasMany(models.blog, {
+        foreignKey: {
+          // name: 'uid',
+          allowNull: false
+        }
+      });
       User.belongsToMany(models.song, {
         through: "reproductions",
         foreignKey: "userId",
@@ -39,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: "songId"
       });
     }
-    getBlog() { // devuelve el id del Blog
+    /*getBlog() { // devuelve el id del Blog
       return 'getBlog()';
     }
     getAllPost() { // devuelve all posts
@@ -59,102 +75,102 @@ module.exports = (sequelize, DataTypes) => {
     }
     getFollowing() { // gente que sigue el user
       return 'getFollows()';
-    }
+    }*/
   }
- 
+
   User.init({
     username: {
       type: DataTypes.STRING,
       get() {
         const username = this.getDataValue('username');
-        return username ;
+        return username;
       }
     },
     surname: {
       type: DataTypes.STRING,
       get() {
         const surname = this.getDataValue('surname');
-        return surname ;
+        return surname;
       }
     },
     phone: {
       type: DataTypes.STRING,
       get() {
         const phone = this.getDataValue('phone');
-        return phone ;
+        return phone;
       },
       set(value) {
-        this.setDataValue('phone',  value);
+        this.setDataValue('phone', value);
       },
     },
     email: {
       type: DataTypes.STRING,
       set(value) {
-        this.setDataValue('email',  value);
+        this.setDataValue('email', value);
       },
       get() {
         const email = this.getDataValue('email');
-        return email ;
+        return email;
       }
     },
     pswd: {
       type: DataTypes.STRING,
       set(value) {
-        this.setDataValue('pswd',  bcrypt.hashSync(value, 8).toString());
+        this.setDataValue('pswd', bcrypt.hashSync(value, 8).toString());
       },
       get() {
         const pswd = this.getDataValue('pswd');
-        return pswd ;
+        return pswd;
       }
     },
     postalCode: {
       type: DataTypes.STRING,
       set(value) {
-        this.setDataValue('postalCode',  value);
+        this.setDataValue('postalCode', value);
       },
       get() {
         const postalCode = this.getDataValue('postalCode');
-        return postalCode ;
+        return postalCode;
       }
     },
     name: {
       type: DataTypes.STRING,
       set(value) {
-        this.setDataValue('name',  value);
+        this.setDataValue('name', value);
       },
       get() {
         const name = this.getDataValue('name');
-        return name ;
+        return name;
       }
     },
     street: {
       type: DataTypes.STRING,
       set(value) {
-        this.setDataValue('street',  value);
+        this.setDataValue('street', value);
       },
       get() {
         const street = this.getDataValue('street');
-        return street ;
+        return street;
       }
-    },    
+    },
     locality: {
       type: DataTypes.STRING,
       set(value) {
-        this.setDataValue('locality',  value);
+        this.setDataValue('locality', value);
       },
       get() {
         const locality = this.getDataValue('locality');
-        return locality ;
+        return locality;
       }
     },
     country: {
       type: DataTypes.STRING,
       set(value) {
-        this.setDataValue('country',  value);
+        this.setDataValue('country', value);
       },
       get() {
         const country = this.getDataValue('country');
-        return country ;
+        return country;
       }
     },
   }, {
@@ -162,6 +178,6 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
   });
 
-  
+
   return User;
 };

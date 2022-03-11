@@ -11,7 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     // OrderAddress.belongsTo(models.Artist);
+      OrderAddress.belongsTo(models.order, {
+        foreignKey: {
+         // name: 'uid',
+          allowNull: false
+        }
+      });
       //OrderAddress.hasMany(models.song);
     }
   }

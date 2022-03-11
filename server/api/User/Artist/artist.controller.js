@@ -70,20 +70,31 @@ exports.create = async (req, res) => {
  * PUT http://localhost:3000/api/v1_1/artist/5
  */
 exports.update = async (req, res) => {
+  let values = {
+    biography: req.body.username,
+    artistName: req.body.name
+  }
+  let selector = {
+    where: { id: req.params.id }
+  };
   // console.log(req.body)
   console.log("UPDATE Artist")
   try {
-    return await Artist.findByPk(id).then(async (artist) => {
-      // console.log(artist)
-      if (artist)
+    return await Artist.findByPk(req.params.id).then(async (artist) => {
+       console.log(artist)
+      if (artist) {
         await Artist.update(values, selector).then((r) => {
           if (r) {
             console.log(r)
             res.status(200).json({ "status": "Succesfully" });
           }
           else
-            res.status(404).json({ "status": "Error" });
+            res.status(404).json({ "status": "Artist not found" });
         })
+      }
+      else
+        res.status(404).json({ "status": "Artist not found" });;
+
     });
   } catch (error) {
     console.log(error)
@@ -125,3 +136,27 @@ exports.getAllDiskFrom = async (req, res) => {
   });
   res.status(200).json(result);
 };
+
+
+/**
+ * Get disk from Artist : 
+ * Get http://localhost:3000/api/v1_1/user/$id/blog
+ */
+exports.getDisks = async (req, res) => {
+  console.log("Get Disks from user" + req.params.id)
+  try {
+    await Artist.findByPk(req.params.id).then(async (artistById) => {
+      if (artistById) {
+        disks = await artistById.getDisks().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}

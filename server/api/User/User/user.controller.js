@@ -1,5 +1,5 @@
 const db = require("../../../models");
-const { disk } = require("../../../models");
+const { disk, artist } = require("../../../models");
 const User = db.user;
 
 //********************************************* */
@@ -44,6 +44,11 @@ exports.moderatorBoard = (req, res) => {
  */
 exports.findAll = async (req, res) => {
   console.log("USERS ALL CONTROLLER")
+  /*const userTest = await User.findByPk(1)
+  console.log("ARTIST++++++++++++++++++++++++++++++++++++++++++++++++")
+  console.log(await userTest.getArtists());*/
+
+
   try {
     await User.findAll().then(r => { if (r) res.json(r) })
   } catch (error) {
@@ -101,7 +106,7 @@ exports.findByPk = async (req, res) => {
 exports.create = async (req, res) => {
   console.log("CREATE USER CONTROLLER")
   try {
-     await User.create({
+    await User.create({
       username: req.body.username,
       name: req.body.name,
       surname: req.body.surname,
@@ -185,6 +190,101 @@ exports.destroy = async function (req, res) {
     })
   } catch (error) {
     console.error(error)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+/**
+ * Get BLogs from user : 
+ * Get http://localhost:3000/api/v1_1/user/$id/blog
+ */
+exports.getBlogs = async (req, res) => {
+  console.log("get blogs from user " + req.params.id)
+  try {
+    await User.findByPk(req.params.id).then(async (userById) => {
+      if (userById) {
+        blogs = await userById.getBlogs().then((blogs) => {
+          if (blogs) res.status(200).json(blogs);
+          else res.status(404).end();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+
+/**
+ * Get Artists from user : 
+ * Get http://localhost:3000/api/v1_1/user/$id/artist
+ */
+exports.getArtists = async (req, res) => {
+  console.log("Get Artist from user" + req.params.id)
+  try {
+    await User.findByPk(req.params.id).then(async (userById) => {
+      if (userById) {
+        artists = await userById.getArtists().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).end();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+
+/**
+ * Get Orders from user : 
+ * Get http://localhost:3000/api/v1_1/user/$id/order
+ */
+exports.getOrders = async (req, res) => {
+  console.log("Get Orders from user" + req.params.id)
+  try {
+    await User.findByPk(req.params.id).then(async (userById) => {
+      if (userById) {
+        orders = await userById.getOrders().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+
+/**
+ * Get FAQs from user : 
+ * Get http://localhost:3000/api/v1_1/user/$id/faq
+ */
+exports.getFaqs = async (req, res) => {
+  console.log("Get Faqs from user" + req.params.id)
+  try {
+    await User.findByPk(req.params.id).then(async (userById) => {
+      if (userById) {
+        orders = await userById.getFaqs().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
     res.status(404).json({ "status": error.message });
   }
 }

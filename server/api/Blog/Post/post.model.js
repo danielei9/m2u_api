@@ -11,15 +11,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     // Post.belongsTo(models.Artist);
-     // Post.hasMany(models.song);
+      Post.belongsTo(models.blog);
+      Post.hasMany(models.comment, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
+      Post.belongsTo(models.disk);
     }
   }
 
   Post.init({
     name: DataTypes.STRING,
-    year: DataTypes.STRING
-  //  id_user: DataTypes.INTEGER
+    description: DataTypes.STRING,
+    content: DataTypes.STRING,
+    //  BlogId: DataTypes.INTEGER
   }, {
     sequelize,
     freezeTableName: true,

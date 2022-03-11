@@ -12,7 +12,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Disk.belongsTo(models.artist);
-      Disk.hasMany(models.song);
+      Disk.hasMany(models.song, {
+        foreignKey: {
+         // name: 'uid',
+          allowNull: false
+        }
+      });
+      Disk.hasMany(models.post);
     }
   }
 

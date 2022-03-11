@@ -12,17 +12,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Song.belongsTo(models.disk);
+      Song.belongsTo(models.disk, {
+        foreignKey: {
+         // name: 'uid',
+          allowNull: false
+        }
+      });
       Song.belongsToMany(models.user, {
         through: "reproductions",
         foreignKey: "songId",
         otherKey: "userId"
-      });
-      Song.belongsToMany(models.artist, {
-        through: "artist_in_song",
-        foreignKey: "songId",
-        otherKey: "artistId"
-      });
+      }); 
+     // Song.hasMany(models.artist);
+      //Song.hasMany(models.artist, {as: 'ifYouWantAlias', constraints: false, allowNull:true, defaultValue:null});
+
      /* Song.belongsToMany(models.Playlist, {
         through: "list_song",
         foreignKey: "songId",

@@ -83,8 +83,12 @@ exports.create = async (req, res) => {
   console.log("CREATE POST CONTROLLER")
   try {
     await Post.create({
-      name: "DataTypes.STRING",
-      year: "DataTypes.STRING"
+      name: req.body.name,
+      description: req.body.description,
+      content: req.body.content,
+      BlogId: req.body.BlogId,
+      DiskId: req.body.DiskId
+
     }).then((r) => {
       if (r) res.status(201).json(r);
       else res.status(404).json(r).end();
@@ -157,6 +161,29 @@ exports.destroy = async function (req, res) {
     })
   } catch (error) {
     console.error(error)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+/**
+ * Get Comments from post : 
+ * Get http://localhost:3000/api/v1_1/blog/$id/blog
+ */
+ exports.getComments = async (req, res) => {
+  console.log("Get Posts from Blog" + req.params.id)
+  try {
+    await Post.findByPk(req.params.id).then(async(postById) => {
+      if (postById) {
+        comments = await postById.getComments().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
     res.status(404).json({ "status": error.message });
   }
 }

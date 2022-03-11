@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     // Comment.belongsTo(models.Artist);
-     // Comment.hasMany(models.song);
+      Comment.belongsTo(models.post);
+     // Comment.hasOne(models.likesComment);
     }
   }
 

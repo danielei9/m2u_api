@@ -13,4 +13,7 @@ module.exports = function(app) {
   app.post("/api/v1_1/blog", controller.create);
   app.put("/api/v1_1/blog/:id", controller.update);
   app.delete("/api/v1_1/blog/:id", controller.destroy);
+
+  app.get("/api/v1_1/blog/:id/post", controller.getPosts);
+  
 };

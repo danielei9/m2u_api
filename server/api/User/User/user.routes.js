@@ -20,6 +20,10 @@ module.exports = function(app) {
   app.put("/api/v1_1/user/:id", controller.update);
   app.delete("/api/v1_1/user/:id", controller.destroy);
 
+  app.get("/api/v1_1/user/:id/blog", controller.getBlogs);
+  app.get("/api/v1_1/user/:id/artist", controller.getArtists);
+  app.get("/api/v1_1/user/:id/order", controller.getOrders);
+
   app.get(
     "/api/v1_1/test/user",
     [authJwt.verifyToken],

@@ -22,8 +22,13 @@ const Order = db.order;
  *]
  */
 exports.findAll = async (req, res) => {
-  console.log("Order ALL")
-  await Order.findAll().then((r) => res.json(r));
+  try {
+    console.log("Order ALL")
+    await Order.findAll().then((r) => res.json(r));
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 };
 /**
  * Buscar un user: 
@@ -45,11 +50,16 @@ exports.findAll = async (req, res) => {
  *
  */
 exports.findByPk = async (req, res) => {
-  console.log("Order BY ID " + req.params.id)
-  await Order.findByPk(req.params.id).then((r) => {
-    if (r) res.json(r);
-    else res.status(404).end();
-  });
+  try {
+    console.log("Order BY ID " + req.params.id)
+    await Order.findByPk(req.params.id).then((r) => {
+      if (r) res.json(r);
+      else res.status(404).end();
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }
 /**
  * crear un user nuevo: 
@@ -66,14 +76,33 @@ exports.findByPk = async (req, res) => {
  *  }
  */
 exports.create = async (req, res) => {
-  console.log("CREATE Order")
-  await Order.create({
-    name: req.body.name,
-    duration: req.body.duration,
-    ArtistId: req.body.userId
-  }).then((r) =>
-    res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
-  );
+  try {
+    console.log("CREATE Order")
+    await Order.create({
+      dateBuy: req.body.dateBuy,
+      dateSend: req.body.dateSend,
+      timeRecived: req.body.timeRecived,
+      shipAddres: req.body.shipAddres,
+      city: req.body.city,
+      country: req.body.country,
+      phone: req.body.phone,
+      shippingCost: req.body.shippingCost,
+      tax: req.body.tax,
+      email: req.body.email,
+      shipped: req.body.shipped,
+      date: req.body.date,
+      trackNumber: req.body.trackNumber,
+      price: req.body.price,
+      sku: req.body.sku,
+      ShopId: req.body.ShopId,
+      UserId: req.body.UserId
+    }).then((r) =>
+      res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
+    );
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }
 /**
  * Actualizar un user: 
@@ -92,8 +121,17 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     let values = {
-      name: req.body.name,
-      duration: req.body.duration
+      dateSend: req.body.dateSend,
+      timeRecived: req.body.timeRecived,
+      shipAddres: req.body.shipAddres,
+      city: req.body.city,
+      country: req.body.country,
+      phone: req.body.phone,
+      shippingCost: req.body.shippingCost,
+      tax: req.body.tax,
+      email: req.body.email,
+      shipped: req.body.shipped,
+      trackNumber: req.body.trackNumber,
     }
     let selector = {
       where: { id: req.params.id }
@@ -111,7 +149,8 @@ exports.update = async (req, res) => {
       else res.status(404).end();
     });
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
   }
 }
 /**
@@ -119,28 +158,38 @@ exports.update = async (req, res) => {
  * delete http://localhost:3000/api/v1_1/user/6
  */
 exports.destroy = async (req, res) => {
-  await Order.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then((r) => {
-    if (r)
-      res.status(200).json({ "status": "Succesfully" });
-    else
-      res.status(404).json({ "status": "Error" });
-  })
+  try {
+    await Order.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then((r) => {
+      if (r)
+        res.status(200).json({ "status": "Succesfully" });
+      else
+        res.status(404).json({ "status": "Error" });
+    })
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }
 
 /* *
  * getAllSongsFromOrder :  (Esta por reparar y revisar)
  * get http://localhost:3000/api/v1_1/getAllSongsFromOrder/6
  */
- exports.getAllSongsFromOrder = async (req, res) => {
-  const songs = await Order.findByPk({
-    include: { model: songs, as: 'songs' }
-  });
+exports.getAllSongsFromOrder = async (req, res) => {
+  try {
+    const songs = await Order.findByPk({
+      include: { model: songs, as: 'songs' }
+    });
     if (songs)
       res.status(200).json(songs);
     else
       res.status(404).json({ "status": "Error" });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }

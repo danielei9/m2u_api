@@ -83,13 +83,10 @@ exports.create = async (req, res) => {
   console.log("CREATE BLOG CONTROLLER")
   try {
      await Blog.create({
-      blogname: req.body.blogname,
       name: req.body.name,
-      surname: req.body.surname,
-      artist_name: req.body.artist_name,
-      phone: req.body.phone,
-      email: req.body.email,
-      pswd: req.body.pswd
+      description: req.body.description,
+      content: req.body.content,
+      UserId: req.body.UserId
     }).then((r) => {
       if (r) res.status(201).json(r);
       else res.status(404).json(r).end();
@@ -117,13 +114,10 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   console.log("UPDATE BLOG")
   let values = {
-    blogname: req.body.blogname,
     name: req.body.name,
-    surname: req.body.surname,
-    artist_name: req.body.artist_name,
-    phone: req.body.phone,
-    email: req.body.email,
-    pswd: req.body.pswd
+    description: req.body.description,
+    content: req.body.content,
+    UserId: req.body.UserId
   }
   let selector = {
     where: { id: req.params.id }
@@ -166,6 +160,29 @@ exports.destroy = async function (req, res) {
     })
   } catch (error) {
     console.error(error)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+/**
+ * Get posts from blog : 
+ * Get http://localhost:3000/api/v1_1/blog/$id/blog
+ */
+ exports.getPosts = async (req, res) => {
+  console.log("Get Posts from Blog" + req.params.id)
+  try {
+    await Blog.findByPk(req.params.id).then(async(blogById) => {
+      if (blogById) {
+        posts = await blogById.getPosts().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
     res.status(404).json({ "status": error.message });
   }
 }

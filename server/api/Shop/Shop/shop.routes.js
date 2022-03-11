@@ -15,4 +15,8 @@ module.exports = function(app) {
   app.post("/api/v1_1/shop", controller.create);
   app.put("/api/v1_1/shop/:id", controller.update);
   app.delete("/api/v1_1/shop/:id", controller.destroy);
+
+  app.get("/api/v1_1/shop/:id/product", controller.getProducts);
+  app.get("/api/v1_1/shop/:id/order", controller.getOrders);
+
 };

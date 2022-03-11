@@ -11,15 +11,28 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     // Review.belongsTo(models.Artist);
-      //Review.hasMany(models.song);
+      Review.belongsTo(models.order, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
+      Review.belongsTo(models.product, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
+      /*Review.belongsTo(models.user, { LO RECOGE DEL ORDER
+        foreignKey: {
+          allowNull: false
+        }
+      });*/
     }
   }
 
   Review.init({
     //name: DataTypes.STRING,
     //year: DataTypes.STRING
-  //  id_user: DataTypes.INTEGER
+    //  id_user: DataTypes.INTEGER
   }, {
     sequelize,
     freezeTableName: true,

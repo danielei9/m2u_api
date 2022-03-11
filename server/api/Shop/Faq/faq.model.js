@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     // Faq.belongsTo(models.Artist);
+       Faq.belongsTo(models.user);
+       Faq.belongsTo(models.product);
       //Faq.hasMany(models.song);
     }
   }

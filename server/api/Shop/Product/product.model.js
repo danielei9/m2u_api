@@ -13,6 +13,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       //asociar a productCategory
+      Product.belongsTo(models.shop, {
+        foreignKey: {
+         // name: 'uid',
+          allowNull: false
+        }
+      });
+      Product.hasMany(models.productCategory);
+      Product.hasMany(models.faq);
+      Product.hasMany(models.review, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
     }
   }
   Product.init({

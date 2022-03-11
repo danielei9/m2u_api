@@ -12,9 +12,32 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     // Shop.hasMany(models.disk);
-     
-     // Shop.belongsTo(models.user);
+      Shop.hasMany(models.order, {
+        foreignKey: {
+          // name: 'uid',
+          allowNull: false
+        }
+      });
+      Shop.hasMany(models.product, {
+        foreignKey: {
+          // name: 'uid',
+          allowNull: false
+        }
+      });
+      Shop.belongsTo(models.artist, {
+        foreignKey: {
+          // name: 'uid',
+          unique: true,
+          allowNull: false
+        }
+      });
+
+      Shop.belongsToMany(models.promotion, {
+        through: "shopPromotion",
+        foreignKey: "shopId",
+        otherKey: "promotionId"
+      });
+      // Shop.belongsTo(models.user);
     }
   }
   Shop.init({
