@@ -101,11 +101,11 @@ describe('USER', () => {
         console.log(res.body)
         expect(200)
       }));
-  it('6. - FIND DELETED USER', () =>
+ /* it('6. - FIND DELETED USER', () =>
     request(app)
       .get('/api/v1_1/user/' + idUser)
       .then((res) => {
         expect(404)
       }));
-   
+   */
 });

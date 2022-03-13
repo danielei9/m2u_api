@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // database
 const db = require("./models");
 const Role = db.role;
+const Genre = db.genre;
 
 // PONER PARA CREAR TABLAS
 //db.sequelize.sync();
@@ -39,6 +40,7 @@ require('./api/User/User/user.routes')(app);
 require('./api/Music/Song/song.routes')(app);
 require('./api/Music/Disk/disk.routes')(app);
 require('./api/Music/Playlist/playlist.routes')(app);
+require('./api/Music/Genres/genre.routes')(app);
 
 require('./api/Blog/blog.routes')(app);
 require('./api/Blog/Comment/comment.routes')(app);
@@ -77,6 +79,9 @@ function initial() {
     id: 3,
     name: "admin"
   });
+  Genre.create({name: "POP"})
+  Genre.create({name: "RAP"})
+  Genre.create({name: "R&B"})
 }
 
 // force: true will drop the table if it already exists

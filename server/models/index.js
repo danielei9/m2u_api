@@ -36,6 +36,8 @@ db.artist = require("../api/User/Artist/artist.model.js")(sequelize, Sequelize);
 db.disk = require("../api/Music/Disk/disk.model.js")(sequelize, Sequelize);
 db.playlist = require("../api/Music/Playlist/playlist.model")(sequelize, Sequelize);
 db.song = require("../api/Music/Song/song.model.js")(sequelize, Sequelize);
+db.genre = require("../api/Music/Genres/genre.model.js")(sequelize, Sequelize);
+
 //--------------------------------Blog--------------------------------
 db.blog = require("../api/Blog/blog.model.js")(sequelize, Sequelize);
 db.comment = require("../api/Blog/Comment/comment.model.js")(sequelize, Sequelize);

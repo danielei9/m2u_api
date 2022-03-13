@@ -11,6 +11,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+     return queryInterface.bulkInsert('Artist',[{}]); //
   },
 
   async down (queryInterface, Sequelize) {
@@ -20,5 +21,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+
   }
 };
