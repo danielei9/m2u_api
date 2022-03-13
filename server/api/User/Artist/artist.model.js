@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
   Artist.init({
     biography: DataTypes.STRING,
     artistName: DataTypes.STRING,
+    artistImg: DataTypes.STRING, 
   }, {
     sequelize,
     freezeTableName: true

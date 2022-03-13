@@ -288,3 +288,40 @@ exports.getFaqs = async (req, res) => {
     res.status(404).json({ "status": error.message });
   }
 }
+
+/**
+ * Get FAQs from user : 
+ * Get http://localhost:3000/api/v1_1/user/$id/all
+ */
+exports.getAllFromUser = async (req, res) => {
+  console.log("Get all from user" + req.params.id)
+  try {
+    await User.findByPk(req.params.id).then(async (userById) => {
+      if (userById) {
+        await User.findAll({
+          include: [{
+            model: db.artist,
+            where: {
+              UserId: userById.id
+            },
+            required: true,
+          }, {
+            model: db.blog,
+            where: {
+              UserId: userById.id
+            },
+            required: true
+          }]
+        }).then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}

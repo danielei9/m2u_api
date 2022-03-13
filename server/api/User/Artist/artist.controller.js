@@ -102,7 +102,6 @@ exports.update = async (req, res) => {
   }
 }
 
-
 /**
  * Delete un artist : 
  * delete http://localhost:3000/api/v1_1/artist/6
@@ -137,17 +136,52 @@ exports.getAllDiskFrom = async (req, res) => {
   res.status(200).json(result);
 };
 
-
 /**
  * Get disk from Artist : 
  * Get http://localhost:3000/api/v1_1/user/$id/blog
  */
 exports.getDisks = async (req, res) => {
-  console.log("Get Disks from user" + req.params.id)
+  console.log("Get Disks from Artist" + req.params.id)
   try {
     await Artist.findByPk(req.params.id).then(async (artistById) => {
       if (artistById) {
         disks = await artistById.getDisks().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+/**
+ * Get FAQs from user : 
+ * Get http://localhost:3000/api/v1_1/user/$id/all
+ */
+ exports.getAllFromArtist = async (req, res) => {
+  console.log("Get all from Artist" + req.params.id)
+  try {
+    await Artist.findByPk(req.params.id).then(async (artistById) => {
+      if (artistById) {
+        await Artist.findAll({
+          include: [{
+            model: db.disk,
+            where: {
+              ArtistId: artistById.id
+            },
+            required: true,
+          }, {
+            model: db.shop,
+            where: {
+              ArtistId: artistById.id
+            },
+            required: true
+          }]
+        }).then((r) => {
           if (r) res.status(200).json(r);
           else res.status(404).error();
         })

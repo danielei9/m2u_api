@@ -23,6 +23,7 @@ module.exports = function(app) {
   app.get("/api/v1_1/user/:id/blog", controller.getBlogs);
   app.get("/api/v1_1/user/:id/artist", controller.getArtists);
   app.get("/api/v1_1/user/:id/order", controller.getOrders);
+  app.get("/api/v1_1/user/:id/all", controller.getAllFromUser);
 
   app.get(
     "/api/v1_1/test/user",

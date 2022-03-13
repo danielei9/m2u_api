@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
       User.hasMany(models.artist);
+      User.hasMany(models.comment   );
      /* User.hasMany(models.review, {
         foreignKey: {
           allowNull: false
@@ -55,27 +56,6 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: "songId"
       });
     }
-    /*getBlog() { // devuelve el id del Blog
-      return 'getBlog()';
-    }
-    getAllPost() { // devuelve all posts
-      return 'getAllPost()';
-    }
-    getAllArtistId() { // el usuario puede tener varios artistas
-      return 'getAllArtistId()';
-    }
-    getAllMinePlaylist() { // Creadas
-      return 'getAllPlaylist()';
-    }
-    getAllFollowedPlaylist() { // Creadas
-      return 'getAllPlaylist()';
-    }
-    getFollows() { // quien esta siguiendo a el usuario
-      return 'getFollows()';
-    }
-    getFollowing() { // gente que sigue el user
-      return 'getFollows()';
-    }*/
   }
 
   User.init({
