@@ -18,13 +18,16 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
       Post.belongsTo(models.disk);
+      Post.belongsTo(models.song);
     }
   }
 
   Post.init({
-    name: DataTypes.STRING,
+    title: DataTypes.STRING,
     description: DataTypes.STRING,
     content: DataTypes.STRING,
+    published: DataTypes.BOOLEAN,
+    publishedAt: { type: DataTypes.DATE, defaultValue: sequelize.NOW }
     //  BlogId: DataTypes.INTEGER
   }, {
     sequelize,

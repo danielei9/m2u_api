@@ -12,13 +12,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Comment.belongsTo(models.post);
+      Comment.belongsTo(models.user);
+      Comment.belongsTo(models.comment,{as:"Parent"});
      // Comment.hasOne(models.likesComment);
     }
   }
 
   Comment.init({
-    text: DataTypes.TEXT,
-  //  id_user: DataTypes.INTEGER // para saber de quien es
+    title: DataTypes.TEXT,
+    published: DataTypes.BOOLEAN,
+    content: DataTypes.TEXT,
+    publishedAt: { type: DataTypes.DATE, defaultValue: sequelize.NOW }
   }, {
     sequelize,
     freezeTableName: true,

@@ -15,5 +15,7 @@ module.exports = function(app) {
   app.delete("/api/v1_1/blog/:id", controller.destroy);
 
   app.get("/api/v1_1/blog/:id/post", controller.getPosts);
+  app.get("/api/v1_1/blog/:id/all", controller.getAllFromBlog);
+  //app.get("/api/v1_1/blog/all", controller.getAllFromAllBlogs);
   
 };

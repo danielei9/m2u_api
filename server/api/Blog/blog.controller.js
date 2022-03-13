@@ -186,3 +186,30 @@ exports.destroy = async function (req, res) {
     res.status(404).json({ "status": error.message });
   }
 }
+/**
+ * Get all from blog : 
+ * Get http://localhost:3000/api/v1_1/blog/$id/all
+ */
+ exports.getAllFromBlog = async (req, res) => {
+  try {
+    console.log("Blog BY ID " + req.params.id)
+    await Blog.findByPk(req.params.id).then(async (blogById) => {
+      if (blogById) {
+        await Blog.findAll({include:[{
+          model:db.post,
+          where: {
+            BlogId: blogById.id
+          },
+        }]}).then(async (r) => {
+          res.json(r);
+        })
+      }
+      else res.status(404).end();
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+
