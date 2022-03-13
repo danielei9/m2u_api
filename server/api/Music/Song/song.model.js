@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      Song.hasMany(models.post);
+
       // define association here
       Song.belongsTo(models.disk, {
         foreignKey: {
@@ -23,14 +25,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "songId",
         otherKey: "userId"
       }); 
-     // Song.hasMany(models.artist);
-      //Song.hasMany(models.artist, {as: 'ifYouWantAlias', constraints: false, allowNull:true, defaultValue:null});
-
-     /* Song.belongsToMany(models.Playlist, {
-        through: "list_song",
-        foreignKey: "songId",
-        otherKey: "playlistId"
-      });*/
+      Song.belongsToMany(models.genre, {
+        through: "genre_song",
+        foreignKey: "SongId",
+        otherKey: "GenreId",
+        timestamps: false
+      });
       Song.belongsToMany(models.user, {
         through: "like_song",
         foreignKey: "songId",
@@ -40,7 +40,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Song.init({
     name: DataTypes.STRING,
-    duration: DataTypes.STRING
+    duration: DataTypes.STRING,
+    
     // id_disk: DataTypes.INTEGER
   }, {
     sequelize,

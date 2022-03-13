@@ -33,8 +33,6 @@ module.exports = (sequelize, DataTypes) => {
   Playlist.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    follower: DataTypes.STRING
-    // author: --> userId
   }, {
     sequelize,
     freezeTableName: true

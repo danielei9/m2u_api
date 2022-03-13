@@ -14,4 +14,7 @@ module.exports = function(app) {
   app.put("/api/v1_1/song/:id", controller.update);
   app.delete("/api/v1_1/song/:id", controller.destroy);
 
+  app.get("/api/v1_1/song/:id/genre", controller.getGenres);
+  app.get("/api/v1_1/song/:id/all", controller.getAllFromSong);
+
 };

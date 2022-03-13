@@ -15,4 +15,7 @@ module.exports = function(app) {
   app.put("/api/v1_1/disk/:id", controller.update);
   app.delete("/api/v1_1/disk/:id", controller.destroy);
 
+  app.get("/api/v1_1/disk/:id/song", controller.getSongsFromDisk);
+  app.get("/api/v1_1/disk/:id/all", controller.getAllFromDisk);
+
 };

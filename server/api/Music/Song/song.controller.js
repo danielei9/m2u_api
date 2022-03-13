@@ -1,5 +1,6 @@
+const { song } = require("../../../models");
 const db = require("../../../models");
-const Song = db.disk;
+const Song = db.song;
 //********************************************* */
 //******************** CONTROLLER ******************* */
 //********************************************* */
@@ -75,16 +76,26 @@ exports.findByPk = async (req, res) => {
  *       "pswd": "1",
  *  }
  */
+
 exports.create = async (req, res) => {
   try {
     console.log("CREATE Song")
-    await Song.create({
+     await Song.create({
       name: req.body.name,
-      duration:req.body.duration,
-      DiskId:req.body.DiskId
-    }).then((r) =>
-      res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
-    );
+      duration: req.body.duration,
+      DiskId: req.body.DiskId,
+      //Genres: req.body.genres //  [] Para crear Genres a la vez que creas un song Nosotros lo queremos predefinido
+    }).then(async (song) => {
+      if (song){
+        await song.addGenres(req.body.GenresId).then(async (genre) => {
+          console.log(genre)
+        })
+        res.status(201).json(song)
+      }
+      else
+        res.status(404).json({ "status": "not created" });
+
+    });
   } catch (error) {
     console.log(error.message)
     res.status(404).json({ "status": error.message });
@@ -146,6 +157,47 @@ exports.destroy = async (req, res) => {
       else
         res.status(404).json({ "status": "Error" });
     })
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+/**
+ * Delete un user : 
+ * delete http://localhost:3000/api/v1_1/user/6
+ */
+exports.getGenres = async (req, res) => {
+  console.log("Get genres from song" + req.params.id)
+  try {
+    await Song.findByPk(req.params.id).then(async (songByID) => {
+      if (songByID) {
+        orders = await songByID.getGenres().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+exports.getAllFromSong = async (req, res) => {
+  try {
+    console.log("Song BY ID " + req.params.id)
+    await Song.findByPk(req.params.id).then(async (SongById) => {
+      if (SongById) {
+        await Song.findAll({include:[{
+          model:db.genre
+        }]}).then(async (r) => {
+          res.json(r);
+        })
+      }
+      else res.status(404).end();
+    });
   } catch (error) {
     console.log(error.message)
     res.status(404).json({ "status": error.message });

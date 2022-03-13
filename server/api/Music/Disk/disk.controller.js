@@ -24,13 +24,13 @@ const { song } = require("../../../models");
  *]
  */
 exports.findAll = async (req, res) => {
-  try{
-  console.log("Disk ALL")
-  await Disk.findAll().then((r) => res.json(r));
-} catch (error) {
-  console.log(error.message)
-  res.status(404).json({ "status": error.message });
-}
+  try {
+    console.log("Disk ALL")
+    await Disk.findAll().then((r) => res.json(r));
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 };
 /**
  * Buscar un user: 
@@ -52,16 +52,16 @@ exports.findAll = async (req, res) => {
  *
  */
 exports.findByPk = async (req, res) => {
-  try{
-  console.log("Disk BY ID " + req.params.id)
-  await Disk.findByPk(req.params.id).then((r) => {
-    if (r) res.json(r);
-    else res.status(404).end();
-  });
-} catch (error) {
-  console.log(error.message)
-  res.status(404).json({ "status": error.message });
-}
+  try {
+    console.log("Disk BY ID " + req.params.id)
+    await Disk.findByPk(req.params.id).then((r) => {
+      if (r) res.json(r);
+      else res.status(404).end();
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }
 /**
  * crear un user nuevo: 
@@ -134,40 +134,74 @@ exports.update = async (req, res) => {
   }
 }
 /**
- * Delete un user : 
- * delete http://localhost:3000/api/v1_1/user/6
+ * Delete un disk : 
+ * delete http://localhost:3000/api/v1_1/user/:idDisk
  */
 exports.destroy = async (req, res) => {
   try {
-  await Disk.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then((r) => {
-    if (r)
-      res.status(200).json({ "status": "Succesfully" });
-    else
-      res.status(404).json({ "status": "Error" });
-  })
-} catch (error) {
-  console.log(error.message)
-  res.status(404).json({ "status": error.message });
-}
+    await Disk.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then((r) => {
+      if (r)
+        res.status(200).json({ "status": "Succesfully" });
+      else
+        res.status(404).json({ "status": "Error" });
+    })
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
 }
 
 /* *
- * getAllSongsFromDisk :  (Esta por reparar y revisar)
- * get http://localhost:3000/api/v1_1/getAllSongsFromDisk/6
+ * getAllSongsFromDisk :  
+ * get http://localhost:3000/api/v1_1/getAllSongsFromDisk/:idDisk
  */
-exports.getAllSongsFromDisk = async (req, res) => {
-  try{
-  const songs = await Disk.findByPk({
-    include: { model: songs, as: 'songs' }
-  });
-  if (songs)
-    res.status(200).json(songs);
-  else
-    res.status(404).json({ "status": "Error" });
+exports.getAllFromDisk = async (req, res) => {
+  console.log("Get Faqs from user" + req.params.id)
+  try {
+    await Disk.findByPk(req.params.id).then(async (foundById) => {
+      if (foundById) {
+        orders = await Disk.findAll({
+          include: [{
+            model: db.song,
+            where: {
+              DiskId: foundById.id
+            },
+            required: true
+          }]
+        }).then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+/* *
+ * getSongsFromDisk :  
+ * get http://localhost:3000/api/v1_1/getAllSongsFromDisk/:idDisk
+ */
+exports.getSongsFromDisk = async (req, res) => {
+  console.log("Get Songs From Disk" + req.params.id)
+  try {
+    await Disk.findByPk(req.params.id).then(async (foundById) => {
+      if (foundById) {
+        orders = await foundById.getSongs().then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
+    });
   } catch (error) {
     console.log(error.message)
     res.status(404).json({ "status": error.message });
