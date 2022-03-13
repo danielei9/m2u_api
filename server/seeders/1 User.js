@@ -1,5 +1,4 @@
 'use strict';
-var bcrypt = require("bcryptjs");
 // correr semillas npx sequelize-cli db:seed:all
 // deshacer semillas npx sequelize-cli db:seed:undo
 //https://www.mockaroo.com/schemas/392303
