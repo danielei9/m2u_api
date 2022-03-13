@@ -18,5 +18,6 @@ module.exports = function(app) {
 
   app.get("/api/v1_1/shop/:id/product", controller.getProducts);
   app.get("/api/v1_1/shop/:id/order", controller.getOrders);
+  app.get("/api/v1_1/shop/:id/all", controller.getAllFromShop);
 
 };

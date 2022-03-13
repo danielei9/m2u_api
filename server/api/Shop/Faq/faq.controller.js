@@ -35,9 +35,10 @@ exports.create = async (req, res) => {
 
     console.log("CREATE Faq")
     await Faq.create({
-      name: req.body.name,
-      duration: req.body.duration,
-      ArtistId: req.body.userId
+      tittle: req.body.tittle,
+      ask: req.body.ask,
+      ProductId: req.body.ProductId,
+      UserId: req.body.UserId
     }).then((r) =>
       res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
     );

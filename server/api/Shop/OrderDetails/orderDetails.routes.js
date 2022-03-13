@@ -15,4 +15,6 @@ module.exports = function(app) {
   app.put("/api/v1_1/orderDetails/:id", controller.update);
   app.delete("/api/v1_1/orderDetails/:id", controller.destroy);
 
+  app.get("/api/v1_1/orderDetails/:id/all", controller.getAllFromOrderDetails);
+
 };
