@@ -313,12 +313,16 @@ exports.getAllFromUser = async (req, res) => {
             required: true
           }]
         }).then((r) => {
-          if (r) res.status(200).json(r);
-          else res.status(404).error();
+          if (r[0]) {
+            res.status(200).json(r);
+          }
+          else {
+            console.log("Not extra data in this User");
+          }
+          res.status(200).json(userById);
         })
       }
       else res.status(404).end();
-
     });
   } catch (error) {
     console.log(error.message)
