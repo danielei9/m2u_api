@@ -14,4 +14,10 @@ module.exports = function(app) {
   app.post("/api/v1_1/product", controller.create);
   app.put("/api/v1_1/product/:id", controller.update);
   app.delete("/api/v1_1/product/:id", controller.destroy);
+
+  app.get("/api/v1_1/product/:id/category", controller.getCategoriesFromProduct);
+  app.get("/api/v1_1/product/:id/review", controller.getReviews);
+  app.get("/api/v1_1/product/:id/faq", controller.getFaqs);
+  app.get("/api/v1_1/product/:id/all", controller.getAllFromProduct);
+
 };

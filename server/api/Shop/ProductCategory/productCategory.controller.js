@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
       ArtistId: req.body.userId
     }).then((r) =>
       res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
-    ); res.status(404).json({ "status": error.message });
+    ); 
   } catch (error) {
     console.log(error.message)
     res.status(404).json({ "status": error.message });

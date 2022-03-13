@@ -15,13 +15,23 @@ module.exports = (sequelize, DataTypes) => {
       //asociar a productCategory
       Product.belongsTo(models.shop, {
         foreignKey: {
-         // name: 'uid',
+          // name: 'uid',
           allowNull: false
         }
       });
-      Product.hasMany(models.productCategory);
+      Product.belongsToMany(models.productCategory, {
+        through: "product_productCategory",
+        foreignKey: "ProductId",
+        otherKey: "ProductCategoryId",
+        timestamps: false
+      });
       Product.hasMany(models.faq);
       Product.hasMany(models.review, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
+      Product.hasMany(models.orderDetails, {
         foreignKey: {
           allowNull: false
         }
@@ -32,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.FLOAT,
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    options:  DataTypes.JSON                        
+    options: DataTypes.JSON
     // example  options: {"color": "rojo","talla": "M"}
     // example  options: {"color": ["rojo","azul"..."negro"],"talla": ["S","M"..."XL"]}
   }, {

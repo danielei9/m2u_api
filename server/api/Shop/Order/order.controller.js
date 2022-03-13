@@ -175,19 +175,31 @@ exports.destroy = async (req, res) => {
   }
 }
 
-/* *
- * getAllSongsFromOrder :  (Esta por reparar y revisar)
- * get http://localhost:3000/api/v1_1/getAllSongsFromOrder/6
+/**
+ * Get All data from order : 
+ * Get http://localhost:3000/api/v1_1/order/$id/all
  */
-exports.getAllSongsFromOrder = async (req, res) => {
+ exports.getAllFromOrder = async (req, res) => {
+  console.log("Get all from Order" + req.params.id)
   try {
-    const songs = await Order.findByPk({
-      include: { model: songs, as: 'songs' }
+    await Order.findByPk(req.params.id).then(async (orderById) => {
+      if (orderById) {
+        await Order.findAll({
+          include: [{
+            model: db.user,
+            required: true,
+          }, {
+            model: db.shop,
+            required: true
+          }]
+        }).then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
+
     });
-    if (songs)
-      res.status(200).json(songs);
-    else
-      res.status(404).json({ "status": "Error" });
   } catch (error) {
     console.log(error.message)
     res.status(404).json({ "status": error.message });

@@ -13,10 +13,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       //relacion orderDetails con Product 
+      OrderDetails.belongsTo(models.order, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
+      OrderDetails.belongsTo(models.product, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
     }
   }
   OrderDetails.init({
-    product: DataTypes.STRING,
     options: DataTypes.STRING,
     price: DataTypes.STRING,
     quantity: DataTypes.STRING,

@@ -120,6 +120,7 @@ exports.destroy = async (req, res) => {
   }
 }
 /**
+ * 
  * Get FAQs from user : 
  * Get http://localhost:3000/api/v1_1/user/$id/faq
  */
@@ -134,6 +135,43 @@ exports.destroy = async (req, res) => {
         })
       }
       else res.status(404).end().json({ "status": "shop Not found " });
+
+    });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ "status": error.message });
+  }
+}
+
+/**
+ * Get FAQs from user : 
+ * Get http://localhost:3000/api/v1_1/user/$id/all
+ */
+ exports.getAllFromShop = async (req, res) => {
+  console.log("Get all from Shop" + req.params.id)
+  try {
+    await Shop.findByPk(req.params.id).then(async (shopByID) => {
+      if (shopByID) {
+        await Shop.findAll({
+          include: [{
+            model: db.product,
+            where: {
+              ShopId: shopByID.id
+            },
+            required: true,
+          }, {
+            model: db.order,
+            where: {
+              ShopId: shopByID.id
+            },
+            required: true
+          }]
+        }).then((r) => {
+          if (r) res.status(200).json(r);
+          else res.status(404).error();
+        })
+      }
+      else res.status(404).end();
 
     });
   } catch (error) {

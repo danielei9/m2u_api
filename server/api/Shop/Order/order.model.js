@@ -17,13 +17,13 @@ module.exports = (sequelize, DataTypes) => {
       //relacion order con user 
       Order.belongsTo(models.user, {
         foreignKey: {
-         // name: 'uid',
+          // name: 'uid',
           allowNull: false
         }
       });
       Order.belongsTo(models.shop, {
         foreignKey: {
-         // name: 'uid',
+          // name: 'uid',
           allowNull: false
         }
       });
@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
       Order.hasOne(models.promotion);
+      Order.hasMany(models.orderDetails, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
       Order.hasOne(models.orderAddress, {
         foreignKey: {
           unique: true,
