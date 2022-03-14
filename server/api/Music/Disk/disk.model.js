@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     label: DataTypes.STRING,
     year: DataTypes.STRING,
+    cover: DataTypes.STRING //img/cover
   //  id_user: DataTypes.INTEGER
   }, {
     sequelize,

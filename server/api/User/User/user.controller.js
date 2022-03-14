@@ -313,16 +313,17 @@ exports.getAllFromUser = async (req, res) => {
             required: true
           }]
         }).then((r) => {
-          if (r[0]) {
+          if (r.length > 0) {
             res.status(200).json(r);
           }
           else {
             console.log("Not extra data in this User");
+            res.status(200).json(userById);
+
           }
-          res.status(200).json(userById);
         })
       }
-      else res.status(404).end();
+      else res.status(404).json({ "status": "User not found" });
     });
   } catch (error) {
     console.log(error.message)

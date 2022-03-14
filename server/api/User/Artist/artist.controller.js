@@ -182,8 +182,8 @@ exports.getDisks = async (req, res) => {
             required: true
           }]
         }).then((r) => {
-          if (r) res.status(200).json(r);
-          else res.status(404).error();
+          if (r[0]) res.status(200).json(r);
+          else res.status(200).json(artistById);
         })
       }
       else res.status(404).end();

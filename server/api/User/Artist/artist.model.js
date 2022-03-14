@@ -20,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false
         }
       })
-      Artist.belongsTo(models.user);
+      Artist.belongsTo(models.user, {
+        foreignKey: {
+          // name: 'uid',
+          allowNull: false
+        }
+      })
       //Artist.belongsTo(models.song);
     }
 

@@ -12,8 +12,8 @@ module.exports = function(app) {
   app.get("/api/v1_1/post/:id", controller.findByPk);
   app.get("/api/v1_1/post", controller.findAll);
   app.post("/api/v1_1/post", controller.create);
-  app.put("/api/v1_1/post/:id", controller.update);
-  app.delete("/api/v1_1/post/:id", controller.destroy);
+  app.put("/api/v1_1/post/:id",[authJwt.verifyToken], controller.update);
+  app.delete("/api/v1_1/post/:id",[authJwt.verifyToken], controller.destroy);
   
   app.get("/api/v1_1/post/:id/comment", controller.getComments);
 };

@@ -80,13 +80,13 @@ exports.findByPk = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     console.log("CREATE Song")
-     await Song.create({
+    await Song.create({
       name: req.body.name,
       duration: req.body.duration,
       DiskId: req.body.DiskId,
       //Genres: req.body.genres //  [] Para crear Genres a la vez que creas un song Nosotros lo queremos predefinido
     }).then(async (song) => {
-      if (song){
+      if (song) {
         await song.addGenres(req.body.GenresId).then(async (genre) => {
           console.log(genre)
         })
@@ -190,10 +190,15 @@ exports.getAllFromSong = async (req, res) => {
     console.log("Song BY ID " + req.params.id)
     await Song.findByPk(req.params.id).then(async (SongById) => {
       if (SongById) {
-        await Song.findAll({include:[{
-          model:db.genre
-        }]}).then(async (r) => {
-          res.json(r);
+        await Song.findAll({
+          include: [{
+            model: db.genre,
+            where: { id: SongById.id }
+          }]
+        }).then(async (r) => {
+          if (r.length > 0)
+            res.status(200).json(r);
+          else res.status(200).json(SongById)
         })
       }
       else res.status(404).end();

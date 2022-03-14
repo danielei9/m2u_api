@@ -1,4 +1,5 @@
 const controller = require("./blog.controller");
+const { authJwt } = require("../middlewares");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -11,8 +12,8 @@ module.exports = function(app) {
   app.get("/api/v1_1/blog/:id", controller.findByPk);
   app.get("/api/v1_1/blog", controller.findAll);
   app.post("/api/v1_1/blog", controller.create);
-  app.put("/api/v1_1/blog/:id", controller.update);
-  app.delete("/api/v1_1/blog/:id", controller.destroy);
+  app.put("/api/v1_1/blog/:id",[authJwt.verifyToken], controller.update);
+  app.delete("/api/v1_1/blog/:id",[authJwt.verifyToken], controller.destroy);
 
   app.get("/api/v1_1/blog/:id/post", controller.getPosts);
   app.get("/api/v1_1/blog/:id/all", controller.getAllFromBlog);

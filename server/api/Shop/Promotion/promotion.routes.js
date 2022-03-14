@@ -1,4 +1,5 @@
 const controller = require("./promotion.controller");
+const { authJwt } = require("../../middlewares");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {

@@ -18,7 +18,7 @@ var verifyToken = (req, res, next) => {
         message: "Unauthorized!"
       });
     }
-    req.userId = decoded.id;
+    req.params.id = decoded.id; //nos asegura que sea esta la id 
     next();
   });
 };
@@ -50,7 +50,6 @@ var isModerator = (req, res, next) => {
           return;
         }
       }
-
       res.status(403).send({
         message: "Require Moderator Role!"
       });
@@ -66,13 +65,11 @@ var isModeratorOrAdmin = (req, res, next) => {
           next();
           return;
         }
-
         if (roles[i].name === "admin") {
           next();
           return;
         }
       }
-
       res.status(403).send({
         message: "Require Moderator or Admin Role!"
       });

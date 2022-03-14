@@ -1,4 +1,5 @@
 const controller = require("./faq.controller");
+const { authJwt } = require("../../middlewares");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -12,7 +13,7 @@ module.exports = function(app) {
   app.get("/api/v1_1/faq/:id", controller.findByPk);
   app.get("/api/v1_1/faq", controller.findAll);
   app.post("/api/v1_1/faq", controller.create);
-  app.put("/api/v1_1/faq/:id", controller.update);
-  app.delete("/api/v1_1/faq/:id", controller.destroy);
+  app.put("/api/v1_1/faq/:id",[authJwt.verifyToken], controller.update);
+  app.delete("/api/v1_1/faq/:id",[authJwt.verifyToken], controller.destroy);
 
 };

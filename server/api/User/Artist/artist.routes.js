@@ -12,9 +12,9 @@ module.exports = function(app) {
   //app.get("/api/v1_1/artist/disk", controller.getAllDiskFrom);
   app.get("/api/v1_1/artist/:id", controller.findByPk);
   app.get("/api/v1_1/artist", controller.findAll);
-  app.post("/api/v1_1/artist", controller.create);
-  app.put("/api/v1_1/artist/:id", controller.update);
-  app.delete("/api/v1_1/artist/:id", controller.destroy);
+  app.post("/api/v1_1/artist",[authJwt.verifyToken], controller.create);
+  app.put("/api/v1_1/artist/:id",[authJwt.verifyToken], controller.update);
+  app.delete("/api/v1_1/artist/:id",[authJwt.verifyToken], controller.destroy);
   
   app.get("/api/v1_1/artist/:id/disk", controller.getDisks);
   app.get("/api/v1_1/artist/:id/all", controller.getAllFromArtist);

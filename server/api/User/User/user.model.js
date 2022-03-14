@@ -65,6 +65,13 @@ module.exports = (sequelize, DataTypes) => {
         const username = this.getDataValue('username');
         return username;
       }
+    }, 
+    jwt: {
+      type: DataTypes.TEXT,
+      get() {
+        const jwt = this.getDataValue('jwt');
+        return jwt;
+      }
     },
     surname: {
       type: DataTypes.STRING,

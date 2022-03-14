@@ -24,8 +24,8 @@ exports.signup = async (req, res) => {
     email: req.body.email,
     pswd: req.body.pswd,
     postalCode: req.body.postalCode,
-    street:req.body.street,
-    locality:req.body.locality,
+    street: req.body.street,
+    locality: req.body.locality,
     country: req.body.country,
   })
     .then(user => {
@@ -54,19 +54,16 @@ exports.signup = async (req, res) => {
 };
 
 exports.signin = (req, res) => {
-  if (debug) {
-    console.log("SIGNIN")
-  }
+  console.log("SIGNIN")
   User.findOne({
     where: {
-      username: req.body.username
+      [Op.or]: [{ username: req.body.username }, {email: req.body.username},  {phone: req.body.username}]
     }
   })
     .then(user => {
       if (!user) {
         return res.status(404).send({ message: "User Not found." });
       }
-      
       var passwordIsValid = bcrypt.compareSync(
         req.body.pswd,
         user.pswd
@@ -79,15 +76,15 @@ exports.signin = (req, res) => {
           message: "Invalid Password!"
         });
       }
-      var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400 // 24 hours
-      });
-
       var authorities = [];
       user.getRoles().then(roles => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
+        var token = jwt.sign({ id: user.id, roles: authorities }, config.secret, {
+          expiresIn: "5m" // 24 hours
+        });
+        user.update({ jwt: String(token) });
         res.status(200).send({
           id: user.id,
           username: user.username,
