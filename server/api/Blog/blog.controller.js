@@ -86,7 +86,8 @@ exports.create = async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       content: req.body.content,
-      UserId: req.body.UserId
+      UserId: req.body.UserId,
+      ArtistId: req.body.ArtistId
     }).then((r) => {
       if (r) res.status(201).json(r);
       else res.status(404).json(r).end();

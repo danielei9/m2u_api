@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Blog.belongsTo(models.user);
+      Blog.belongsTo(models.artist);
       Blog.hasMany(models.post, {
         foreignKey: {
           allowNull: false

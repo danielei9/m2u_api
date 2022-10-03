@@ -18,7 +18,10 @@ var verifyToken = (req, res, next) => {
         message: "Unauthorized!"
       });
     }
-    req.params.id = decoded.id; //nos asegura que sea esta la id 
+    console.log("DECODED UID:  " + decoded.UID)
+    console.log("DECODED AID:  " + decoded.AID)
+    req.UID = decoded.UID; //nos asegura que sea esta la id 
+    req.AID = decoded.AID; //nos asegura que sea esta la id 
     next();
   });
 };

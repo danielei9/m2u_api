@@ -36,7 +36,7 @@ exports.create = async (req, res) => {
     await Shop.create({
       name: req.body.name,
       duration: req.body.duration,
-      ArtistId: req.body.ArtistId
+      ArtistId: req.AID
     }).then((r) =>
       res.status(201).location(`/api/v1_1/examples/${r.id}`).json(r)
     );
@@ -49,7 +49,7 @@ exports.create = async (req, res) => {
  * 
  */
 exports.update = async (req, res) => {
-  try {
+  try { 
     let values = {
       name: req.body.name,
       duration: req.body.duration
@@ -108,11 +108,12 @@ exports.destroy = async (req, res) => {
       if (shopById) {
         products = await shopById.getProducts().then((r) => {
           if (r) res.status(200).json(r);
-          else res.status(404).error();
+          else{
+            res.status(404).json("Not products found");
+          } 
         })
       }
-      else res.status(404).end().json({ "status": "shop Not found " });
-
+      else res.status(404).json({ "status": "shop Not found " });
     });
   } catch (error) {
     console.log(error.message)
@@ -131,10 +132,10 @@ exports.destroy = async (req, res) => {
       if (shopById) {
         products = await shopById.getOrders().then((r) => {
           if (r) res.status(200).json(r);
-          else res.status(404).error();
+          else res.status(404).json({ "status": "orders Not found " });
         })
       }
-      else res.status(404).end().json({ "status": "shop Not found " });
+      else res.status(404).json({ "status": "shop Not found " });
 
     });
   } catch (error) {
@@ -171,7 +172,7 @@ exports.destroy = async (req, res) => {
           else res.status(404).error();
         })
       }
-      else res.status(404).end();
+      else res.status(404).json({"status": "shop not found"});
 
     });
   } catch (error) {

@@ -13,10 +13,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      Artist.hasMany(models.blog, {
+        foreignKey: {
+          allowNull: true
+        }
+      });
       Artist.hasMany(models.disk);
       Artist.hasOne(models.shop, {
         foreignKey: {
-          // name: 'uid',
           allowNull: false
         }
       })

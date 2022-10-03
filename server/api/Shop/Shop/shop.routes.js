@@ -12,7 +12,7 @@ module.exports = function(app) {
   //app.get("/api/v1_1/shop/disk", controller.getAllDiskFrom);
   app.get("/api/v1_1/shop/:id", controller.findByPk);
   app.get("/api/v1_1/shop", controller.findAll);
-  app.post("/api/v1_1/shop",[authJwt.verifyToken], controller.create);
+  app.post("/api/v1_1/shop",/*[authJwt.verifyToken],*/ controller.create);
   app.put("/api/v1_1/shop/:id",[authJwt.verifyToken], controller.update);
   app.delete("/api/v1_1/shop/:id",[authJwt.verifyToken], controller.destroy);
 

@@ -57,7 +57,7 @@ exports.signin = (req, res) => {
   console.log("SIGNIN")
   User.findOne({
     where: {
-      [Op.or]: [{ username: req.body.username }, {email: req.body.username},  {phone: req.body.username}]
+      [Op.or]: [{ username: req.body.username }, { email: req.body.username }, { phone: req.body.username }]
     }
   })
     .then(user => {
@@ -81,17 +81,24 @@ exports.signin = (req, res) => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
-        var token = jwt.sign({ id: user.id, roles: authorities }, config.secret, {
-          expiresIn: "5m" // 24 hours
-        });
-        user.update({ jwt: String(token) });
-        res.status(200).send({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          roles: authorities,
-          accessToken: token
-        });
+        user.getArtists().then( async (artists) => {
+          ArtistsId = []
+          artists.forEach(element => {
+            ArtistsId.push(element.id)
+          });
+          var token = jwt.sign({ UID: user.id, AID: ArtistsId }, config.secret, {  // UID USER ID  AID ARTIST ID
+            expiresIn: "5m" // 24 hours
+          });
+         await  user.update({ jwt: String(token) });
+          res.status(200).send({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            roles: authorities,
+            accessToken: token
+          });
+        })
+
       });
     })
     .catch(err => {

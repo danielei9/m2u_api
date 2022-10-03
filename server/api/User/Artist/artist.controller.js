@@ -52,7 +52,8 @@ exports.create = async (req, res) => {
     return await Artist.create({
       biography: req.body.biography,
       artistName: req.body.artistName,
-      UserId: req.body.UserId,
+      UserId: req.UID,
+      artistImg: req.body.artistImg
     }).then((r) => {
       if (r)
         res.status(201).json(r)
