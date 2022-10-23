@@ -1,18 +1,18 @@
-const db = require("../../../models");
-const l = require("./../../../common/logger");
-const config = require("../../../config/auth.config");
+const db = require('../../../models');
+// const l = require('./../../../common/logger');
+const config = require('../../../config/auth.config');
 const User = db.user;
 const Role = db.role;
 let debug = true;
 const Op = db.Sequelize.Op;
 
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
 
 exports.signup = async (req, res) => {
   // Save User to Database
   if (debug) {
-    console.log("SIGNUP")
+    console.log('SIGNUP');
     //console.log(bcrypt.hashSync(req.body.pswd, 8))
   }
   await User.create({
@@ -28,80 +28,109 @@ exports.signup = async (req, res) => {
     locality: req.body.locality,
     country: req.body.country,
   })
-    .then(user => {
+    .then((user) => {
       if (req.body.roles) {
         Role.findAll({
           where: {
             name: {
-              [Op.or]: req.body.roles
-            }
-          }
-        }).then(roles => {
+              [Op.or]: req.body.roles,
+            },
+          },
+        }).then((roles) => {
           user.setRoles(roles).then(() => {
-            res.status(201).send({ message: "User registered successfully!" });
+            res.status(201).send({ message: 'User registered successfully!' });
           });
         });
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
-          res.status(201).send({ message: "User registered successfully!" });
+          res.status(201).send({ message: 'User registered successfully!' });
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({ message: err.message });
     });
 };
 
 exports.signin = (req, res) => {
-  console.log("SIGNIN")
+  console.log('SIGNIN');
   User.findOne({
     where: {
-      [Op.or]: [{ username: req.body.username }, { email: req.body.username }, { phone: req.body.username }]
-    }
+      [Op.or]: [
+        { username: req.body.username },
+        { email: req.body.username },
+        { phone: req.body.username },
+      ],
+    },
   })
-    .then(user => {
+    .then((user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: 'User Not found.' });
       }
-      var passwordIsValid = bcrypt.compareSync(
-        req.body.pswd,
-        user.pswd
-      );
-      console.log("*/************* FIND user ************/")
-      console.log(user)
+      var passwordIsValid = bcrypt.compareSync(req.body.pswd, user.pswd);
+      console.log('*/************* FIND user ************/');
+      console.log(user);
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: "Invalid Password!"
+          message: 'Invalid Password!',
         });
       }
       var authorities = [];
-      user.getRoles().then(roles => {
+      user.getRoles().then((roles) => {
         for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
+          authorities.push('ROLE_' + roles[i].name.toUpperCase());
         }
-        user.getArtists().then( async (artists) => {
-          ArtistsId = []
-          artists.forEach(element => {
-            ArtistsId.push(element.id)
+        user.getArtists().then(async (artists) => {
+          let ArtistsId = [];
+          artists.forEach((element) => {
+            ArtistsId.push(element.id);
           });
-          var token = jwt.sign({ UID: user.id, AID: ArtistsId }, config.secret, {  // UID USER ID  AID ARTIST ID
-            expiresIn: "5m" // 24 hours
-          });
-         await  user.update({ jwt: String(token) });
+
+          var accessToken = jwt.sign(
+            { UID: user.id, AID: ArtistsId },
+            config.secret,
+            {
+              // UID USER ID  AID ARTIST ID
+              expiresIn: '5m', // 24 hours
+            }
+          );
+          var refreshToken = jwt.sign(
+            { UID: user.id, AID: ArtistsId },
+            config.secret,
+            {
+              // UID USER ID  AID ARTIST ID
+              expiresIn: '2 days', // 24 hours
+            }
+          );
+          // FIXME: Revisar por quie guardamos jwt en bd
+          await user.update({ jwt: String(accessToken) });
           res.status(200).send({
             id: user.id,
             username: user.username,
             email: user.email,
             roles: authorities,
-            accessToken: token
+            accessToken: accessToken,
+            refreshToken: refreshToken,
           });
-        })
-
+        });
       });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({ message: err.message });
     });
+};
+
+exports.refreshToken = (req, res) => {
+  let uid = req.UID; // user ID
+  let aid = req.AID; // artist ID
+  var accessToken = jwt.sign({ UID: uid, AID: aid }, config.secret, {
+    // UID USER ID  AID ARTIST ID
+    expiresIn: '5m', // 24 hours
+  });
+
+  res.status(200).json({
+    accessToken: accessToken,
+  });
 };

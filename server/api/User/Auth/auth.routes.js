@@ -1,5 +1,6 @@
 const { verifySignUp } = require("../../middlewares");
 const controller = require("./auth.controller");
+const { authJwt } = require("../../middlewares");
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -9,7 +10,7 @@ module.exports = function (app) {
     );
     next();
   });
-  
+
   /** 
    * SIGNUP
    * 
@@ -29,15 +30,21 @@ module.exports = function (app) {
     ],
     controller.signup
   );
-/** 
-   * SIGNIN
-   * 
-   * http://localhost:3000/api/v1_1/auth/signin
-   * SEND
-   * {
-   *  "username": "admin",
-   *   "pswd": "bcrypt"
-   * }
-   */  
+  /** 
+     * SIGNIN
+     * 
+     * http://localhost:3000/api/v1_1/auth/signin
+     * SEND
+     * {
+     *  "username": "admin",
+     *   "pswd": "bcrypt"
+     * }
+     */
   app.post("/api/v1_1/auth/signin", controller.signin);
+
+  app.post(
+    "/api/v1_1/auth/refresh",
+    [authJwt.verifyToken],
+    controller.refreshToken
+  );
 };
